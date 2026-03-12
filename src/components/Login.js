@@ -10,7 +10,7 @@ function Login(props) {
 
     const handlesubmit=async(e)=>{
         e.preventDefault();
-
+        props.loading(30);
         const response=await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/login`,{
             method:"POST",
             headers:{

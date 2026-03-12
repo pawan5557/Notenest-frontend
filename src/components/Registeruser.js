@@ -3,7 +3,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom';
 
-function Registeruser() {
+function Registeruser(props) {
     const navigate=useNavigate();
     const[error, seterror]=useState("")
     const[inputemail,setinputemail]=useState("")
@@ -11,6 +11,7 @@ function Registeruser() {
     const[inputpass, setinputpass]=useState("")
 
     const handleregister=async(e)=>{
+        props.loading(30);
         seterror("")
         e.preventDefault();
 

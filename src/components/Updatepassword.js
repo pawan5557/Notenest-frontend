@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import styled from 'styled-components'
-function Updatepassword() {
+function Updatepassword(props) {
     const[error,seterror]=useState("")
     const[oldpass,setoldpass]=useState("");
     const[newpass,setnewpass]=useState("");
@@ -10,8 +10,10 @@ function Updatepassword() {
     const navigate=useNavigate();
 
     const handleupdatepassword=async(e)=>{
+        props.loading(30);
         seterror("")
         e.preventDefault();
+        
         if (newpass !== confirmpass) {
             
             return seterror("New passwords do not match!")

@@ -11,6 +11,7 @@ function Notes(props) {
     }, [props.log]);
 
     const fetchnotes = async () => {
+        props.loading(30);
         try {
             // Rectified: Assigned the fetch to the 'response' variable
             const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/fetchnotes`, {

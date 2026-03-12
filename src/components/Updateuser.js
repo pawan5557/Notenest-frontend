@@ -2,13 +2,14 @@ import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-function Updateuser() {
+function Updateuser(props) {
     const[error,seterror]=useState("")
     const[inputemail, setinputemail]=useState("")
     const[inputusername, setinputusername]=useState("")
     const navigate=useNavigate();
 
     const handleupdateuser= async(e)=>{
+        props.loading(30);
         seterror("")
         e.preventDefault();
       try {

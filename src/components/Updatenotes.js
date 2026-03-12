@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 
-function Updatenotes() {
+function Updatenotes(props) {
     const [isediting, setisediting]=useState(true)
     
     const [editdata, seteditdata]=useState({title:"", tag:"", content:"" })
@@ -17,6 +17,7 @@ function Updatenotes() {
 
     useEffect(() => {
       const fetchOriginalNote = async () => {
+        props.loading(30);
           try {
               const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/fetchnotes`, {
                   method: "GET",

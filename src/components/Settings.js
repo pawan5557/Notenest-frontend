@@ -2,7 +2,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
 
-function Settings() {
+function Settings(props) {
+  props.loading(30);
     const navigate=useNavigate();
   return (
     <div>

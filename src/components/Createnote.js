@@ -2,13 +2,14 @@ import React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom';
-function Createnote() {
+function Createnote(props) {
     const [title, settitle]=useState("");
     const [tag, settag]=useState("");
     const [content, setcontent]=useState("");
     const navigate=useNavigate();
     const makenote=async(e)=>{
         e.preventDefault();
+        props.loading(30);
         try {
             const response=await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/createnotes`,{
                 method:"POST",

@@ -46,7 +46,7 @@ function Navbar(props) {
       return(
         <div>
       <Navbarcontainer>
-      <Link to="/">NoteNest</Link>
+      <Link to="">NoteNest</Link>
       <Link to="/login">Login</Link>
       </Navbarcontainer>
       {/* This logic says: ONLY show the video if we are on the Home page */}
@@ -71,7 +71,7 @@ function Navbar(props) {
 
 
       <Navbarcontainer>
-      <Link to="/">NoteNest</Link>
+      <Link to="">NoteNest</Link>
       <button onClick={()=>handlelogout()}>Logout</button>
       {/* <Link to="/" onClick={()=>handlelogout()}>Logout</Link> */}
       

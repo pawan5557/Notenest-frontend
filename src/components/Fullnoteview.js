@@ -18,6 +18,7 @@ function Fullnoteview(props) {
 
     useEffect(()=>{
         const fetchfullviewnote= async()=>{ 
+            props.loading(30);
             try {
                const response=await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/fetchnotes`,{
                    method:"GET",

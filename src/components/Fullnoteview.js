@@ -65,7 +65,7 @@ function Fullnoteview(props) {
             const wannadelete=window.confirm("do you wanna delete the note");
             if(wannadelete){
     
-                const response=await fetch(`http://localhost:5000/users/deletenotes/${id}`,{
+                const response=await fetch(`${process.env.REACT_APP_BACKEND_URL}/${id}`,{
                     method:"DELETE",
                     credentials:"include"
                 })

@@ -10,19 +10,24 @@ function Fullnoteview(props) {
     const [fullviewnote, setfullviewnote]=useState(null);
    
     const navigate=useNavigate();
-    
-
-
-
-
 
     useEffect(()=>{
         const fetchfullviewnote= async()=>{ 
             props.loading(30);
+
             try {
+
+               // get stored token
+               const token = sessionStorage.getItem("token");
+
                const response=await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/fetchnotes`,{
                    method:"GET",
-                   credentials:"include"
+                   headers:{
+                       "Authorization": `Bearer ${token}`
+                   },
+
+                   // cookie auth not needed anymore
+                   // credentials:"include"
                })
        
                const data= await response.json();
@@ -39,39 +44,40 @@ function Fullnoteview(props) {
                        return false;
                    }
                })
+
                setfullviewnote(isspecificnotefound);
-       
        
             } catch (error) {
                console.log(error)
             } 
-           }
+        }
        
-           fetchfullviewnote();
-
+        fetchfullviewnote();
 
     }, [id]);
-
-    
-
-
-
-
 
 
 
     const handledelete =async()=>{
         try {
-          console.log("Button Clicked! Function is running...");
+
+            console.log("Button Clicked! Function is running...");
             const wannadelete=window.confirm("do you wanna delete the note");
+
             if(wannadelete){
-    
+
+                // get stored token
+                const token = sessionStorage.getItem("token");
+
                 const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/deletenotes/${id}`, {
                     method: "DELETE",
-                    credentials: "include"
+                    headers:{
+                        "Authorization": `Bearer ${token}`
+                    },
+
+                    // credentials: "include"
                 })
         
-                
                 if(response.ok){
                     
                     alert("note deleted");
@@ -80,32 +86,24 @@ function Fullnoteview(props) {
                 else{
                     alert("failed to delete the note");
                 }
-    
+
             }
-    
+
             else{
                 
             }
+
         } catch (error) {
             console.log(error)
         }
-       
-    
     }
-
-
-
-
-
-
-   
-
 
 
 
     if (fullviewnote === null) {
         return <h2>Loading your note...</h2>;
     }
+
     return (
     <Container>
       
@@ -125,8 +123,6 @@ function Fullnoteview(props) {
             <p>{fullviewnote.content}</p>
             </div>
             
-            
-        
     </Container>
   )
 
@@ -160,18 +156,12 @@ position: relative;
 .container0_1{
     display: flex;
     flex-direction: row;
-    /* position: absolute;
-    top:30px;
-    left:1380px; */
-
-
     gap: 20px;
 }
 
 .container1{
     display: flex;
     flex-direction: column;
-
 }
 
 h3{

@@ -1,38 +1,52 @@
-import React, { useEffect } from 'react' // 1. Added useEffect to imports
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function Deleteuser({setlog}) { // Added props to catch setlog
+function Deleteuser({setlog}) {
     const navigate = useNavigate();
 
-    // 2. Wrap your logic in useEffect so it runs once on mount
     useEffect(() => {
         const handledeleteuser = async () => {
             try {
+
+                // get stored token
+                const token = sessionStorage.getItem("token");
+
                 const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/deleteuser`, {
                     method: "DELETE",
-                    credentials: "include",
+
                     headers: {
-                        "content-type": "application/json"
-                    }
+                        "content-type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+
+                    // cookie authentication not needed anymore
+                    // credentials: "include",
                 })
                 
                 const data = await response.json();
                 
                 if (response.status === 200) {
                     alert("Account deleted")
-                    setlog(false) // Update Navbar state
+
+                    // remove stored login state
+                    sessionStorage.removeItem("token")
+                    sessionStorage.removeItem("isLoggedIn")
+
+                    setlog(false)
                     navigate("/login")
+
                 } else {
                     alert(data.message)
-                    
                 }
+
             } catch (error) {
                 console.log(error)
             }
         }
 
-        handledeleteuser(); // 3. Call the function inside the effect
-    }, [navigate, setlog]); // 4. Empty dependency array ensures it only runs ONCE
+        handledeleteuser();
+
+    }, [navigate, setlog]);
 
     return (
         <div>

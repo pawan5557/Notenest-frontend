@@ -2,24 +2,37 @@ import React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom';
+
 function Createnote(props) {
     const [title, settitle]=useState("");
     const [tag, settag]=useState("");
     const [content, setcontent]=useState("");
     const navigate=useNavigate();
+
     const makenote=async(e)=>{
         e.preventDefault();
         props.loading(30);
+
         try {
+
+            // get stored token
+            const token = sessionStorage.getItem("token");
+
             const response=await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/createnotes`,{
                 method:"POST",
                 headers:{
-                    "content-type":"application/json"
+                    "content-type":"application/json",
+                    "Authorization": `Bearer ${token}`
                 },
-                credentials:"include",
+
+                // cookies not needed anymore
+                // credentials:"include",
+
                 body:JSON.stringify({title:title, content:content, tag:tag})
             })
+
             const data=await response.json();
+
             if(response.status===200){
                 alert("note saved successfully")
                 console.log(data.message)
@@ -28,12 +41,12 @@ function Createnote(props) {
             else{
                 alert("some fault occured while saving")
             }
+
         } catch (error) {
             console.log(error)
         }
 
     }
-
 
   return (
     <Container0>
@@ -44,10 +57,7 @@ function Createnote(props) {
         </div>
         </div>
 
-
         <div className='container3'>
-
-            
             <input className='inputtitle'
             placeholder='Title'
             value={title}
@@ -56,7 +66,6 @@ function Createnote(props) {
         </div>
 
         <div>
-            
             <input className='inputtag'
             placeholder='Tag'
             value={tag}
@@ -65,7 +74,6 @@ function Createnote(props) {
         </div>
 
         <div>
-            
             <textarea className='inputcontent'
             placeholder='Content'
             value={content}
@@ -73,8 +81,6 @@ function Createnote(props) {
             ></textarea>
         </div>
 
-        
-     
     </Container0>
   )
 }
@@ -84,51 +90,40 @@ display: flex;
 flex-direction: column;
 padding: 30px;
 
-
-
 .inputtitle{
-    border: none;        /* Removes the default border */
-    outline: none;       /* Removes the blue/black box when you click to type */
-    background: transparent; /* Ensures no background box is visible */
+    border: none;
+    outline: none;
+    background: transparent;
     width: 100%;
     font-weight: 700;
     font-size: 26px !important;
 }
 
-
-
 .inputtag{
-    
-   
-    border: none;        /* Removes the default border */
-    outline: none;       /* Removes the blue/black box when you click to type */
-    background: transparent; /* Ensures no background box is visible */
+    border: none;
+    outline: none;
+    background: transparent;
     width: 100%;
     font-size: 18px !important;
     font-weight: 500 !important;
     margin-top: 5px;
     font-family: inherit;
-    
 }
-
 
 .inputcontent{
     margin-top: 20px;
     font-size: 19px;
-    border: none;        /* Removes the default border */
-    outline: none;       //Removes the blue/black box when you click to type
-    background: transparent; /* Ensures no background box is visible */
+    border: none;
+    outline: none;
+    background: transparent;
     width: 100%;
     min-height: calc(100vh - 150px);
 }
 
-
 .container3{
     display: flex;
     flex-direction: column;
-    
 }
-
 
 .container2{
     display: flex;
@@ -137,6 +132,7 @@ padding: 30px;
     row-gap: 100px;
     justify-content: space-between;
     margin-bottom: 35px;
+
     button{
         height: 30px;
         width:60px;
@@ -150,6 +146,7 @@ padding: 30px;
     display: flex;
     flex-direction:row;
     gap: 20px;
+
 .savebtn{
         height: 30px;
         width:110px;
@@ -157,7 +154,7 @@ padding: 30px;
         cursor: pointer;
         font-size: 14px;
     }
-    
 }
 `;
+
 export default Createnote

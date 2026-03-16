@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+
 function Updateuser(props) {
     const[error,seterror]=useState("")
     const[inputemail, setinputemail]=useState("")
@@ -12,25 +13,36 @@ function Updateuser(props) {
         props.loading(30);
         seterror("")
         e.preventDefault();
+
       try {
+
+         // get stored token
+         const token = sessionStorage.getItem("token");
+
          const response= await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/updateuser`,{
               method:"PUT",
-              credentials:"include",
+
               headers:{
-                  "content-type":"application/json"
+                  "content-type":"application/json",
+                  "Authorization": `Bearer ${token}`
               },
+
+              // credentials:"include",
+
               body:JSON.stringify({email:inputemail, username:inputusername})
           })
   
           const data= await response.json();
+
           if(response.status===200){
               alert("User details updated successfully")
               navigate("/setting");
           }
           else{
             seterror(data.message);
-              alert(data.message)
+            alert(data.message)
           }
+
       } catch (error) {
             console.log(error)
       }
@@ -63,7 +75,6 @@ function Updateuser(props) {
             <p>{error}</p>
             </div>
 
-            
             <div className='actions'>
             <button className='cancelbtn' type='button' onClick={()=>navigate("/setting")}>Cancel</button>
             <button className='updatedetailsbtn' type='button' onClick={(e)=>handleupdateuser(e)}>Update Details</button>
@@ -80,8 +91,6 @@ const Container=styled.div`
 display: flex;
 flex-direction: column;
 .container0{
-
-
 padding-left: 50px;
 padding-top: 30px;
 }
@@ -92,8 +101,6 @@ form{
     border: 2px solid black;
     padding: 50px;
     gap: 30px;
-
-
 }
 `;
 
@@ -105,50 +112,45 @@ justify-content: center;
 align-items: center;
 height: 70vh;
 
-
 label{
     font-size: 20px;
 }
+
 .inputemail{
-    width:225px;
+width:225px;
 height:35px;
 font-size: 20px;
 padding-top: 5px;
 }
 
 .inputusername{
-    width:225px;
+width:225px;
 height:35px;
 font-size: 20px;
 padding-top: 5px;
 }
 
-
 .actions{
-    display: flex;
-    flex-direction: row;
-    column-gap: 30px;
+display: flex;
+flex-direction: row;
+column-gap: 30px;
 }
 
 .updatedetailsbtn{
-        height: 30px;
-        width:120px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 14px;
-    }
+height: 30px;
+width:120px;
+border-radius: 6px;
+cursor: pointer;
+font-size: 14px;
+}
 
-
-    .cancelbtn{
-        height: 30px;
-        width:60px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 14px;
-    }
-
+.cancelbtn{
+height: 30px;
+width:60px;
+border-radius: 6px;
+cursor: pointer;
+font-size: 14px;
+}
 `;
-
-
 
 export default Updateuser

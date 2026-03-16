@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import styled from 'styled-components'
+
 function Updatepassword(props) {
     const[error,seterror]=useState("")
     const[oldpass,setoldpass]=useState("");
@@ -15,37 +16,43 @@ function Updatepassword(props) {
         e.preventDefault();
         
         if (newpass !== confirmpass) {
-            
             return seterror("New passwords do not match!")
         }
+
        try {
-         
- 
+
+         // get token from session storage
+         const token = sessionStorage.getItem("token");
+
          const response=await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/updatepassword`,{
              method:"PUT",
-             credentials:"include",
+
              headers:{
-             "Content-Type":"application/json",
+                "Content-Type":"application/json",
+                "Authorization": `Bearer ${token}`
              },
+
+             // credentials:"include",
+
              body:JSON.stringify({oldpassword:oldpass, newpassword:newpass})
          })
-             const data=await response.json();
-             if(response.ok){
-                 alert("password changed successfully")
-                 navigate("/setting")
-             }
-             else{
-                seterror(data.message)
-                
-             }
+
+         const data=await response.json();
+
+         if(response.ok){
+             alert("password changed successfully")
+             navigate("/setting")
+         }
+         else{
+            seterror(data.message)
+         }
+
        } catch (error) {
             seterror(error)
             console.log(error)
        }
 
     } 
-
-
 
   return (
 
@@ -94,6 +101,7 @@ function Updatepassword(props) {
                 <button className='savepassbtn' type="submit">Save Password</button>
                    
                 </div>
+
             </form>
             </Container1>
       
@@ -105,8 +113,6 @@ const Container=styled.div`
 display: flex;
 flex-direction: column;
 .container0{
-
-
 padding-left: 50px;
 padding-top: 30px;
 }
@@ -117,8 +123,6 @@ form{
     border: 2px solid black;
     padding: 50px;
     gap: 30px;
-
-
 }
 `;
 
@@ -130,53 +134,52 @@ justify-content: center;
 align-items: center;
 height: 70vh;
 
-
 label{
     font-size: 20px;
 }
+
 .inputcurrentpass{
-    width:225px;
+width:225px;
 height:35px;
 font-size: 20px;
 padding-top: 5px;
 }
 
 .inputnewpass{
-    width:225px;
+width:225px;
 height:35px;
 font-size: 20px;
 padding-top: 5px;
 }
 
 .inputconfirmpass{
-    width:225px;
+width:225px;
 height:35px;
 font-size: 20px;
 padding-top: 5px;
 }
+
 .actions{
-    display: flex;
-    flex-direction: row;
-    column-gap: 30px;
+display: flex;
+flex-direction: row;
+column-gap: 30px;
 }
 
 .savepassbtn{
-        height: 30px;
-        width:120px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 14px;
-    }
+height: 30px;
+width:120px;
+border-radius: 6px;
+cursor: pointer;
+font-size: 14px;
+}
 
-
-    .cancelbtn{
-        height: 30px;
-        width:60px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 14px;
-    }
-
+.cancelbtn{
+height: 30px;
+width:60px;
+border-radius: 6px;
+cursor: pointer;
+font-size: 14px;
+}
 `;
 
 export default Updatepassword
